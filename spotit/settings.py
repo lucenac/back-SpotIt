@@ -112,10 +112,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "spot-it-seven.vercel.app",
-    "http://localhost:5173",
-]
+CORS_ALLOW_ALL_ORIGINS = True # Pressa rs
 
 CORS_ALLOW_CREDENTIALS = True 
 
