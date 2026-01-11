@@ -7,11 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("DJANGO_SECRET_KEY", default="dev-insecure-secret-key")
 DEBUG = config("DJANGO_DEBUG", cast=bool, default=True)
-ALLOWED_HOSTS = config(
-    "DJANGO_ALLOWED_HOSTS",
-    cast=Csv(),
-    default="localhost,127.0.0.1",
-)
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -115,13 +111,6 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "http://127.0.0.1:5173",
-]
+CORS_ALLOWED_ORIGINS = True # Coloquei aqui só por pressa
 
 CORS_ALLOW_CREDENTIALS = True
