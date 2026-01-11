@@ -75,51 +75,59 @@ class ItemSerializer(serializers.ModelSerializer):
     reporter_name = serializers.CharField(source="reporter.name", read_only=True)
     reporter_email = serializers.EmailField(source="reporter.email", read_only=True)
     reporter_phone = serializers.CharField(source="reporter.phone", read_only=True)
+    user_id = serializers.CharField(source="reporter.id", read_only=True)
 
     class Meta:
         model = Item
         fields = [
             "id",
+            "type",
             "title",
             "description",
-            "status",
             "category",
             "location",
-            "event_date",
-            "image_url",
-            "contact_info",
-            "receiver_name",
-            "receiver_contact",
+            "date",
+            "contact_name",
+            "contact_email",
+            "contact_phone",
+            "status",
+            "user_id",
+            "resolved_by",
+            "resolved_contact",
+            "resolved_contact_type",
+            "resolved_notes",
+            "created_at",
+            "updated_at",
             "reporter",
             "reporter_name",
             "reporter_email",
             "reporter_phone",
-            "created_at",
-            "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at", "reporter"]
+        read_only_fields = ["id", "created_at", "updated_at", "reporter", "user_id", "reporter_name", "reporter_email", "reporter_phone"]
 
     def validate(self, attrs):
         status = attrs.get("status")
-        receiver_name = attrs.get("receiver_name")
-        receiver_contact = attrs.get("receiver_contact")
+        resolved_by = attrs.get("resolved_by")
+        resolved_contact = attrs.get("resolved_contact")
 
         if self.instance is not None:
             if status is None:
                 status = self.instance.status
-            if receiver_name is None:
-                receiver_name = self.instance.receiver_name
-            if receiver_contact is None:
-                receiver_contact = self.instance.receiver_contact
+            if resolved_by is None:
+                resolved_by = self.instance.resolved_by
+            if resolved_contact is None:
+                resolved_contact = self.instance.resolved_contact
 
-        if status == Item.Status.RETURNED:
-            if not receiver_name or not receiver_contact:
+        if status == Item.Status.RESOLVED:
+            if not resolved_by or not resolved_contact:
                 raise serializers.ValidationError(
                     {
-                        "receiver_name": "This field is required when status is returned.",
-                        "receiver_contact": "This field is required when status is returned.",
+                        "resolved_by": "This field is required when status is resolved.",
+                        "resolved_contact": "This field is required when status is resolved.",
                     }
                 )
+
+        return attrs
 
         return attrs
 

@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -61,12 +63,8 @@ WSGI_APPLICATION = "spotit.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": config("DB_ENGINE", default="django.db.backends.postgresql"),
-        "NAME": config("POSTGRES_DB", default="spotit"),
-        "USER": config("POSTGRES_USER", default="spotit"),
-        "PASSWORD": config("POSTGRES_PASSWORD", default="spotit"),
-        "HOST": config("POSTGRES_HOST", default="db"),
-        "PORT": config("POSTGRES_PORT", default="5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -116,3 +114,14 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API do sistema SpotIt.",
     "VERSION": "1.0.0",
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://127.0.0.1:5173",
+]
+
+CORS_ALLOW_CREDENTIALS = True

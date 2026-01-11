@@ -34,6 +34,14 @@ class ItemViewSet(
         if status:
             queryset = queryset.filter(status=status)
 
+        item_type = params.get("type")
+        if item_type and item_type != 'all':
+            queryset = queryset.filter(type=item_type)
+
+        category = params.get("category")
+        if category and category != 'all':
+            queryset = queryset.filter(category=category)
+
         reporter = params.get("reporter")
         mine = params.get("mine")
         if reporter == "me" or (mine and mine.lower() in {"1", "true", "yes"}):
@@ -49,7 +57,6 @@ class ItemViewSet(
                 | Q(description__icontains=query)
                 | Q(location__icontains=query)
                 | Q(category__icontains=query)
-                | Q(contact_info__icontains=query)
             )
 
         return queryset
